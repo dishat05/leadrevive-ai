@@ -20,15 +20,15 @@ export default async function handler(req: express.Request, res: express.Respons
   
   // Rewrite req.url to strip /api prefix
   const originalUrl = req.url;
-  req.url = req.url.replace(/^\/api/, '') || '/';
+  req.url = req.url?.replace(/^\/api/, '') || '/';
   
   app(req, res, (err) => {
     if (err) {
-      console.error(err);
+      console.error('API Error:', err);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
   
-  // Restore original URL for potential middleware
+  // Restore original URL just in case
   req.url = originalUrl;
 }

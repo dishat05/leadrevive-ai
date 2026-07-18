@@ -1,23 +1,13 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/**/*.ts",
-      "use": "@vercel/node@3"
+      "source": "/api/(.*)",
+      "destination": "/api/[...slug]"
     },
     {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/[...slug].ts"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
     }
   ]
 }
