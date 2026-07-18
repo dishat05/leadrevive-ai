@@ -22,7 +22,10 @@ const COLORS = {
   /* ---------------------------------------------------------------
    API CLIENT
 ---------------------------------------------------------------*/
-const API_URL = "http://localhost:5000/api/v1";
+const API_URL = 
+  window.location.hostname === "localhost" 
+    ? "http://localhost:5000/api/v1" 
+    : "/api/v1";
 
 async function apiCall(method, endpoint, body = null) {
   const headers = {
