@@ -1,12 +1,18 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import express from 'express';
 import app from './app.js';
 import { env } from './config/env.js';
 import { connectDb } from './config/db.js';
 
+let isConnected = false;
+
 async function bootstrap() {
-  await connectDb();
+  if (!isConnected) {
+    await connectDb();
+    isConnected = true;
+  }
 
   if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     app.listen(env.PORT, () => {
@@ -20,4 +26,8 @@ bootstrap().catch((err) => {
   process.exit(1);
 });
 
-export default app;
+// Vercel handler
+export default async function handler(req: express.Request, res: express.Response) {
+  await bootstrap();
+  return app(req, res);
+}
