@@ -1,8 +1,6 @@
-
 import dotenv from 'dotenv';
 dotenv.config();
 
-import express from 'express';
 import app from '../backend/src/app.js';
 import { connectDb } from '../backend/src/config/db.js';
 
@@ -15,10 +13,9 @@ async function bootstrap() {
   }
 }
 
-export default async function handler(req: express.Request, res: express.Response) {
+export default async function handler(req, res) {
   await bootstrap();
   
-  // Rewrite req.url to strip /api prefix
   const originalUrl = req.url;
   req.url = req.url?.replace(/^\/api/, '') || '/';
   
@@ -29,6 +26,5 @@ export default async function handler(req: express.Request, res: express.Respons
     }
   });
   
-  // Restore original URL just in case
   req.url = originalUrl;
 }
